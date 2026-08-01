@@ -9,11 +9,11 @@ import subprocess
 
 # Variables
 char_dict={
-        "rick_o_rama":"Lightslayer",
-        "bazrael_bazington":"Game Master",
-        "ragnarthebold":"Steelheart",
-        "mreinvegas":"Magus Maximus",
-        "fineman5316":"Static Prophet"
+        "discord_username1":"Game Master",
+        "discord_username2":"character_name2",
+        "discord_username3":"character_name3",
+        "discord_username4":"character_name4",
+        "discord_username5":"character_name5"
         }
 
 
@@ -287,68 +287,7 @@ async def on_message(message):
                 title="**Damage Roll from " + str(char_dict[str(message.author)]) + "!**"
         )
         await message.channel.send(embed=embed)
-    '''
-    if message.content.startswith('$kill'):
-        logging.info(str(time.asctime()) + f' {message.author} typed ' + message.content)
-        # Initialize variables
-        total_stun=0
-        total_body=0
-        number_dice_int=0
-        send_txt=""
-        # Assign text of message to orig_cmd
-        orig_cmd=message.content
-        # Assign command options to number_dice
-        number_dice=str.replace(orig_cmd, '$kill', '')
-        # Roll to determine the STUN multiplier as stun_mult
-        stun_mult_roll=random.randint(1,6)
-        stun_mult_raw=(stun_mult_roll * .5)
-        # Round up to stun_mult_rounded
-        stun_mult=int(math.ceil(stun_mult_raw))
-        # Banner
-        # If nothing entered besides the command, defaults to 1 die
-        if number_dice=="":
-           number_dice_int=1
-        # If last character is an "h", make the roll and calc the results
-        elif number_dice[-1]=="h":
-           # Strip the "h" character from the end of number_dice
-           number_dice=number_dice[:-1]
-           # Roll 1/2d6 to rolled_halved
-           rolled_all=random.randint(1,6)
-           rolled_halved=(rolled_all * .5)
-           # Round up to rolled_rounded
-           rolled_rounded=int(math.ceil(rolled_halved))
-           # Add results to total_body
-           total_body=rolled_rounded
-           # Send results of 1/2d6 BODY
-           send_txt = send_txt + ("`1/2d6 roll: " + str(rolled_all) + ", Haved: " + str(rolled_halved) + ". Rounded up: +" + str(rolled_rounded) + " BODY`\n")
-           # If there was a number of dice specified along with "h", assign that number to number_dice_int
-           if number_dice != "":
-           	number_dice_int = int(number_dice)
-        else:
-           # If the command has a suffix, and does not end in "h", then the suffix is the number of dice to roll
-           number_dice_int = int(number_dice)
-           # If the number of dice determined above is >20, then make it 20. 
-        if number_dice_int>20:
-           number_dice_int=20
-        # Roll dice "number_dice_int" times, adding to total_body
-        for i in range(number_dice_int):
-           rolled=random.randint(1,6)
-           total_body=total_body+rolled
-           roll_seq=i+1
-           send_txt = send_txt + ("`" + str(roll_seq) + "-BODY: " + str(rolled) + "`\n")
-        # Multiply total BODY by STUN modifier to determine total STUN 
-        total_stun=total_body*stun_mult
-        # Send STUN calc summary
-        send_txt = send_txt + ("`STUN roll: " + str(stun_mult_roll) + ", STUN Multiplier: " + str(stun_mult) + " X " + str(total_body) + " = +" + str(total_stun) + " STUN`\n")
-        send_txt = send_txt + "\n**Total**\nSTUN: " + str(total_stun) + "\n" + "BODY: " + str(total_body) + "\n"
-        # Send Total STUN and BODY
-        embed = discord.Embed(
-                colour=discord.Colour.red(),
-                description=(send_txt),
-                title="**Killing Damage Roll from " + str(char_dict[str(message.author)]) + "!**"
-        )
-        await message.channel.send(embed=embed)
-        '''
+    
     if message.content.startswith('$kill'):
         logging.info(str(time.asctime()) + f' {message.author} typed ' + message.content)
         # Initialize variables
@@ -415,6 +354,96 @@ async def on_message(message):
     if message.content.startswith('$hitloc'):
         logging.info(str(time.asctime()) + f' {message.author} typed ' + message.content)
         # Initialize variables
-        await message.channel.send(file=discord.File('/usr/local/bin/WeDontDoThatHere.png'))
+        number_dice_int=3
+        total_rolled=0
+        hand=""
+        handed=""
+        send_txt="**Rolls**: "
+        # Make the rolls
+        for i in range(number_dice_int):
+           rolled=random.randint(1,6)
+           total_rolled=total_rolled + rolled
+           send_txt = send_txt + str(rolled) + ", " 
+        send_txt = send_txt + "total: " + str(total_rolled) + "\n"
+        if total_rolled < 6:
+                hit_location="Head"
+                STUNx="x5"
+                N_STUN="x2"
+                BODYx="x2"
+                OCV="-8"
+        if total_rolled == 6:
+                hit_location="Hand"
+                STUNx="x1"
+                N_STUN="x.5"
+                BODYx="x.5"
+                OCV="-6"
+                handed="y"
+        if total_rolled in [7,8]:
+                hit_location="Arm"
+                STUNx="x2"
+                N_STUN="x.5"
+                BODYx="x.5"
+                OCV="-5"
+                handed="y"
+        if total_rolled == 9:
+                hit_location="Shoulder"
+                STUNx="x3"
+                N_STUN="x1"
+                BODYx="x1"
+                OCV="-5"
+                handed="y"
+        if total_rolled in [10,11]:
+                hit_location="Chest"
+                STUNx="x3"
+                N_STUN="x1"
+                BODYx="x1"
+                OCV="-3"
+        if total_rolled == 12:
+                hit_location="Stomach"
+                STUNx="x4"
+                N_STUN="x1.5"
+                BODYx="x1"
+                OCV="-7"
+        if total_rolled == 13:
+                hit_location="Vitals"
+                STUNx="x4"
+                N_STUN="x1.5"
+                BODYx="x2"
+                OCV="-8"
+        if total_rolled == 14:
+                hit_location="Thigh"
+                STUNx="x2"
+                N_STUN="x1"
+                BODYx="x1"
+                OCV="-4"
+                handed="y"
+        if total_rolled in [15,16]:
+                hit_location="Leg"
+                STUNx="x2"
+                N_STUN="x.5"
+                BODYx="x.5"
+                OCV="-6"
+                handed="y"
+        if total_rolled in [17,18]:
+                STUNx="x1"
+                N_STUN="x.5"
+                BODYx="x.5"
+                OCV="-8"
+                handed="y"
+        if handed=="y":
+             handroll=random.randint(1,6)
+             if handroll < 4:
+                 hand="left"
+             else:
+                 hand="right"
+             hit_location=(hit_location + " (" + hand + ")")
+        send_txt = send_txt + "**Hit Location**: " + hit_location + "\n" + "**STUNx**: " + STUNx + "\n**N STUN**: " + N_STUN + "\n**BODYx**: " + BODYx + "\n**OCV**: " + OCV + "\n"
+        embed = discord.Embed(
+                colour=discord.Colour.green(),
+                description=(send_txt),
+                title="**Hit Location roll from " + str(message.author) + "!**"
+        )
+        await message.channel.send(embed=embed)
+
 
 
