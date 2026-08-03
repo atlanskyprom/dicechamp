@@ -140,7 +140,6 @@ async def on_message(message):
            # Calc the Current Turn Mode 
            curr_turn_mode=int(distance)/5
            send_txt = send_txt + "\n**Can turn again in " + str(curr_turn_mode) + "m**\n"
-           #send_txt = send_txt + "\n**Current turn mode: " + str(curr_turn_mode) + "m**\n"
            embed = discord.Embed(
                colour=discord.Colour.dark_red(),
                description=(send_txt),
@@ -198,8 +197,6 @@ async def on_message(message):
         embed = discord.Embed(
                 colour=discord.Colour.green(),
                 description=(send_txt),
-                #title="**" + str(message.author) + "** rolls the dice!"
-                #title="**" + str(char_dict[str(message.author)]) + "** rolls the dice!"
                 title="**" + str(char_dict[str(message.author)]) + "** rolls the dice!"
         )
         await message.channel.send(embed=embed)
@@ -268,7 +265,6 @@ async def on_message(message):
         send_txt = send_txt + ("`1-KB: " + str(kbroll1) + "`\n")
         send_txt = send_txt + ("`2-KB: " + str(kbroll2) + "`\n")
         kbresult=total_body-kbtotal
-        #send_txt = send_txt + ("\n**Total**\n**STUN**: " + str(total_stun) + "\n" + "**BODY**: " + str(total_body))
         send_txt = send_txt + ("\nKB Rolls: " + str(kbtotal) + "\nKB Calc: " + str(kbresult))
         if kbresult<0:
             kbdist=0
